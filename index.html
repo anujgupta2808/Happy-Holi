@@ -21,6 +21,11 @@
       padding: 1rem;
       position: relative;
       overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     /* DYNAMIC SPLASH BACKGROUND */
@@ -76,7 +81,7 @@
       border-radius: 60px 60px 40px 40px;
       padding: 2.5rem 2rem;
       box-shadow: 0 40px 70px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 120, 160, 0.4) inset, 0 0 40px #ff66aa50;
-      transition: all 0.3s;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
       overflow: hidden;
     }
 
@@ -182,7 +187,7 @@
       border-radius: 40px;
       padding: 2rem 1rem 1.8rem;
       border: 2px solid;
-      transition: 0.25s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
       text-align: center;
       box-shadow: 0 20px 30px -10px black;
       position: relative;
@@ -205,8 +210,8 @@
     }
 
     .powder-card:hover {
-      transform: scale(1.05) rotate(1deg);
-      box-shadow: 0 0 40px currentColor;
+      transform: scale(1.05) translateY(-8px);
+      box-shadow: 0 25px 50px -12px currentColor, 0 0 40px currentColor;
     }
 
     .card-icon {
@@ -321,7 +326,7 @@
       font-size: 1.3rem;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.2s;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       gap: 0.8rem;
@@ -331,7 +336,7 @@
     .holi-btn:hover {
       background: #ff66aa;
       border-color: #ffffaa;
-      transform: scale(1.1) rotate(-1deg);
+      transform: scale(1.05);
       box-shadow: 0 0 50px #ffaaee;
     }
 
@@ -452,6 +457,40 @@
       height: 100%;
       pointer-events: none;
       z-index: 9990;
+      transition: border 0.3s;
+    }
+
+    #paintCanvas.active {
+      border: 3px dashed #66ff99;
+      box-shadow: inset 0 0 30px rgba(102, 255, 153, 0.3);
+    }
+
+    .paint-close-btn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 0, 0, 0.8);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      z-index: 9991;
+      transition: 0.3s;
+    }
+
+    .paint-close-btn:hover {
+      background: #ff3333;
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    .paint-close-btn.show {
+      display: flex;
     }
 
     /* COLOR PALETTE ACCUMULATOR */
@@ -507,6 +546,9 @@
     }
 
     .paint-toggle, .erase-toggle {
+      position: relative;
+      right: 15px;
+      /* top: 10px; */
       background: rgba(0,0,0,0.7);
       border: 2px solid #ff99cc;
       color: white;
@@ -612,15 +654,18 @@
   <!-- Paint Canvas for draw mode -->
   <canvas id="paintCanvas"></canvas>
 
+  <!-- Close Paint Mode Button -->
+  <button class="paint-close-btn" id="paintCloseBtn" onclick="togglePaintMode()">✕</button>
+
   <!-- Paint Mode Toggle -->
   <div class="mode-toggle">
     <button class="paint-toggle" id="paintToggle" onclick="togglePaintMode()">
       🎨 Paint Mode: OFF
     </button>
     <div class="paint-controls" id="paintControls" style="display: none;">
-      <button class="erase-toggle" id="eraseToggle" onclick="toggleEraser()">
-        🧹 Eraser
-      </button>
+      <!-- <button class="erase-toggle" id="eraseToggle" onclick="toggleEraser()"> -->
+        <!-- 🧹 Eraser -->
+      <!-- </button> -->
     </div>
   </div>
 
@@ -700,6 +745,12 @@
       <button class="holi-btn" onclick="location.reload()">
         <span>🌀</span> REFRESH COLORS
       </button>
+      <button class="holi-btn" onclick="togglePaintMode()">
+        <span>🎨</span> PAINT MODE
+      </button>
+      <button class="holi-btn" onclick="clearCanvas()" id="clearBtn" style="display: none;">
+        <span>🧹</span> CLEAR
+      </button>
       <div class="color-picker-wrapper">
         <input type="color" class="custom-color-input" id="customColor" value="#ff4080" onchange="throwCustomColor(this.value)">
       </div>
@@ -710,10 +761,6 @@
       <!-- Colors will accumulate here -->
     </div>
 
-    <p class="keyboard-hint" style="text-align: center;">
-      Press <kbd>1</kbd>-<kbd>6</kbd> for colors &nbsp;|&nbsp; <kbd>Space</kbd> for confetti
-      <kbd>P</kbd> Paint Mode &nbsp;|&nbsp; <kbd>E</kbd> Eraser &nbsp;|&nbsp; <kbd>C</kbd> Clear
-    </p>
 
     <!-- TODAY SPECIAL MESSAGE -->
     <div class="footer-special">
@@ -900,13 +947,18 @@
       const btn = document.getElementById('paintToggle');
       const controls = document.getElementById('paintControls');
       const paintCanvasEl = document.getElementById('paintCanvas');
+      const clearBtn = document.getElementById('clearBtn');
+      const closeBtn = document.getElementById('paintCloseBtn');
       
       if (paintMode) {
         btn.textContent = '🎨 Paint Mode: ON';
         btn.classList.add('active');
         controls.style.display = 'flex';
+        clearBtn.style.display = 'flex';
+        closeBtn.classList.add('show');
         paintCanvasEl.style.pointerEvents = 'auto';
-        showToast('🎨 Paint Mode ON! Click/drag to draw. Press E for eraser, C to clear. Press P to turn OFF.');
+        paintCanvasEl.classList.add('active');
+        showToast('🎨 Paint Mode ON! Click/drag to draw.');
         
         // Add drawing event listeners
         paintCanvas.addEventListener('mousedown', startDrawing);
@@ -917,9 +969,17 @@
         btn.textContent = '🎨 Paint Mode: OFF';
         btn.classList.remove('active');
         controls.style.display = 'none';
+        clearBtn.style.display = 'none';
+        closeBtn.classList.remove('show');
         eraseMode = false;
-        document.getElementById('eraseToggle').classList.remove('active');
+        const eraseToggle = document.getElementById('eraseToggle');
+        if (eraseToggle) eraseToggle.classList.remove('active');
         paintCanvasEl.style.pointerEvents = 'none';
+        paintCanvasEl.classList.remove('active');
+        
+        // Clear canvas when turning off paint mode
+        paintCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+        
         showToast('🎨 Paint Mode OFF');
       }
     }
@@ -942,6 +1002,7 @@
 
     // Drawing functions
     function startDrawing(e) {
+      if (e.target.closest('.paint-toggle') || e.target.closest('.erase-toggle') || e.target.closest('.paint-close-btn')) return;
       isDrawing = true;
       draw(e);
     }
@@ -1034,27 +1095,26 @@
         cmdSpan.innerText = `splash --color '${colorHex}' --happy`;
       }
 
-      // create flying particles (reduced count for performance)
-      for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-          createParticle(colorHex);
-        }, i * 50);
+      // create flying particles with requestAnimationFrame
+      for (let i = 0; i < 120; i++) {
+        setTimeout(() => requestAnimationFrame(() => createParticle(colorHex)), i * 30);
       }
 
-      // also flash main border
+      // flash main border with requestAnimationFrame
       const carnival = document.querySelector('.holi-carnival');
       if (carnival) {
-        carnival.style.transition = 'border 0.1s, box-shadow 0.2s';
-        carnival.style.border = `6px solid ${colorHex}`;
-        carnival.style.boxShadow = `0 0 100px ${colorHex}, 0 0 40px #ffffff80 inset`;
+        requestAnimationFrame(() => {
+          carnival.style.border = `4px solid ${colorHex}`;
+          carnival.style.boxShadow = `0 0 60px ${colorHex}, 0 0 20px #ffffff50 inset`;
+        });
+        
         setTimeout(() => {
-          carnival.style.border = '3px solid rgba(255, 200, 150, 0.3)';
-          carnival.style.boxShadow = '0 40px 70px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 120, 160, 0.4) inset, 0 0 40px #ff66aa50';
-        }, 500);
+          requestAnimationFrame(() => {
+            carnival.style.border = '3px solid rgba(255, 200, 150, 0.3)';
+            carnival.style.boxShadow = '0 40px 70px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 120, 160, 0.4) inset, 0 0 40px #ff66aa50';
+          });
+        }, 400);
       }
-
-      // console message for devs
-      console.log(`%c🌸 Holi special! %cColor ${colorHex} thrown`, `background: ${colorHex}; color: black; font-size: 1.4rem; padding: 0.3rem; border-radius: 8px;`, 'color: #ffaa; font-size: 1.2rem;');
     }
 
     // Custom color throw
@@ -1102,6 +1162,7 @@
     window.throwCustomColor = throwCustomColor;
     window.togglePaintMode = togglePaintMode;
     window.toggleEraser = toggleEraser;
+    window.clearCanvas = clearCanvas;
 
     // extra: click anywhere to throw little colour (with cooldown)
     let lastClickTime = 0;
