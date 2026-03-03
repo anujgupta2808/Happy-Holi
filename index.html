@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌈 HOLI 2026 :: coder's colour blast 🎨</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0d17;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* DYNAMIC SPLASH BACKGROUND */
+    .splash-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(45deg, #1a1a2e, #16213e, #1e1a3a, #2a1e3c);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* FLOATING COLOR PARTICLES */
+    .particle-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      filter: blur(2px);
+      animation: floatParticle 8s infinite linear;
+      opacity: 0;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(100vh) scale(0); opacity: 0.8; }
+      100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+    }
+
+    /* MAIN CONTAINER */
+    .holi-carnival {
+      position: relative;
+      z-index: 10;
+      max-width: 1300px;
+      width: 100%;
+      background: rgba(10, 8, 20, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 3px solid rgba(255, 200, 150, 0.3);
+      border-radius: 60px 60px 40px 40px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 40px 70px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 120, 160, 0.4) inset, 0 0 40px #ff66aa50;
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+
+    /* COLOR SPLASH OVERLAY (ANIMATED) */
+    .color-drips {
+      position: absolute;
+      top: -50%;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, #ff3366, transparent 40%),
+                  radial-gradient(circle at 70% 60%, #ffcc00, transparent 45%),
+                  radial-gradient(circle at 20% 80%, #66ff99, transparent 50%),
+                  radial-gradient(circle at 90% 20%, #ff66ff, transparent 40%),
+                  radial-gradient(circle at 50% 50%, #00ffff, transparent 60%);
+      opacity: 0.25;
+      filter: blur(40px);
+      animation: swirl 18s infinite alternate;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes swirl {
+      0% { transform: rotate(0deg) scale(1); opacity: 0.2; }
+      100% { transform: rotate(8deg) scale(1.2); opacity: 0.4; }
+    }
+
+    /* HEADER - EXPLOSIVE */
+    .header-splash {
+      position: relative;
+      z-index: 15;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .title-giant {
+      font-size: clamp(3rem, 15vw, 7rem);
+      font-weight: 900;
+      line-height: 1;
+      text-align: center;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ff9999, #ffcc99, #ffff99, #99ff99, #99ccff, #cc99ff, #ff99cc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 30px #ff66aa) drop-shadow(0 0 10px #aaffaa);
+      animation: partyText 2s infinite alternate;
+      margin-bottom: 0.5rem;
+    }
+
+    @keyframes partyText {
+      0% { filter: drop-shadow(0 0 20px #ff3366) drop-shadow(0 0 40px #33ffcc); }
+      100% { filter: drop-shadow(0 0 40px #ff66ff) drop-shadow(0 0 60px #ffff66); }
+    }
+
+    .subtitle-bash {
+      font-size: 1.4rem;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 0.6rem 2rem;
+      border-radius: 100px;
+      border: 2px solid #ffaa00;
+      color: #fff5d6;
+      display: inline-flex;
+      gap: 1rem;
+      backdrop-filter: blur(10px);
+      margin-top: -0.5rem;
+      box-shadow: 0 0 30px #ffaa33;
+    }
+
+    .subtitle-bash span {
+      color: #ffd966;
+      font-weight: bold;
+    }
+
+    .cursor-blink {
+      animation: blink 1s step-end infinite;
+      background: #ffaa66;
+      width: 10px;
+      display: inline-block;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* COLOR CARDS - SUPER VIBRANT */
+    .color-grid {
+      position: relative;
+      z-index: 15;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .powder-card {
+      background: rgba(15, 15, 30, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 40px;
+      padding: 2rem 1rem 1.8rem;
+      border: 2px solid;
+      transition: 0.25s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: center;
+      box-shadow: 0 20px 30px -10px black;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .powder-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.3), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .powder-card:hover::before {
+      opacity: 0.6;
+    }
+
+    .powder-card:hover {
+      transform: scale(1.05) rotate(1deg);
+      box-shadow: 0 0 40px currentColor;
+    }
+
+    .card-icon {
+      font-size: 4.5rem;
+      margin-bottom: 0.5rem;
+      filter: drop-shadow(0 0 15px currentColor);
+    }
+
+    .hex-code {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: monospace;
+      margin: 0.5rem 0;
+      letter-spacing: 2px;
+    }
+
+    .var-name {
+      font-size: 1.1rem;
+      background: rgba(0,0,0,0.4);
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      display: inline-block;
+      border: 1px dashed rgba(255,255,255,0.3);
+      font-family: monospace;
+    }
+
+    /* CARD BORDER COLORS */
+    .card-pink { border-color: #ff77b0; }
+    .card-pink .hex-code { color: #ffb0d9; text-shadow: 0 0 15px #ff77b0; }
+    .card-blue { border-color: #77ddff; }
+    .card-blue .hex-code { color: #aae0ff; text-shadow: 0 0 15px #3bb3ff; }
+    .card-yellow { border-color: #ffd966; }
+    .card-yellow .hex-code { color: #ffe792; text-shadow: 0 0 15px #ffb347; }
+    .card-green { border-color: #aaffaa; }
+    .card-green .hex-code { color: #c6ffb0; text-shadow: 0 0 15px #66ff66; }
+    .card-purple { border-color: #dd99ff; }
+    .card-purple .hex-code { color: #e9b3ff; text-shadow: 0 0 15px #b266ff; }
+    .card-orange { border-color: #ffb347; }
+    .card-orange .hex-code { color: #ffc97a; text-shadow: 0 0 15px #ff8c42; }
+
+    /* SPECIAL MESSAGE BOARD */
+    .message-board {
+      position: relative;
+      z-index: 15;
+      background: rgba(20, 15, 35, 0.8);
+      backdrop-filter: blur(16px);
+      border-radius: 80px;
+      padding: 2rem 2.5rem;
+      margin: 2.5rem 0;
+      border: 3px solid #ffb3d9;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      box-shadow: 0 0 60px #ff44aa80;
+    }
+
+    .holi-quote {
+      font-size: 2.2rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .holi-quote .rainbow-text {
+      background: linear-gradient(45deg, #ff6666, #ffbb66, #ffff66, #88ff88, #8888ff, #ff88ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
+    }
+
+    .cmd-line {
+      background: #0f0f1f;
+      border-radius: 60px;
+      padding: 1rem 2rem;
+      font-size: 1.3rem;
+      border: 2px solid #ffaaff;
+      font-family: monospace;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 0 30px #ff88ff;
+    }
+
+    .prompt {
+      color: #77ff77;
+    }
+
+    .cmd-text {
+      color: #ffdd88;
+    }
+
+    /* BUTTONS + INTERACTIVE */
+    .action-zone {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: center;
+      margin: 2rem 0;
+      position: relative;
+      z-index: 15;
+    }
+
+    .holi-btn {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      border: 2px solid #ff99cc;
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 60px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 0 20px #ff66aa;
+    }
+
+    .holi-btn:hover {
+      background: #ff66aa;
+      border-color: #ffffaa;
+      transform: scale(1.1) rotate(-1deg);
+      box-shadow: 0 0 50px #ffaaee;
+    }
+
+    /* FOOTER - TODAY SPECIAL */
+    .footer-special {
+      position: relative;
+      z-index: 15;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3rem;
+      padding-top: 1.8rem;
+      border-top: 3px dashed #ff99bb;
+      font-size: 1.2rem;
+    }
+
+    .date-badge {
+      background: #1d1a30;
+      padding: 0.6rem 1.8rem;
+      border-radius: 50px;
+      border: 2px solid #ffbb88;
+      box-shadow: 0 0 30px #ffaa55;
+      color: #f0f0f0;
+    }
+
+    .holi-message {
+      color: #ffe6b3;
+    }
+
+    .holi-message strong {
+      color: #ffb5c0;
+      font-size: 1.5rem;
+    }
+
+    /* RAINBOW ANIMATION BAR */
+    .rainbow-bar {
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 200% 100%;
+      animation: rainbowMove 3s linear infinite;
+      border-radius: 10px;
+      margin: 2rem 0 0.5rem;
+    }
+
+    @keyframes rainbowMove {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* particle generator */
+    .splash-particle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      filter: blur(5px);
+      animation: pop 1s forwards;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 1; }
+      70% { transform: scale(3); opacity: 0.7; }
+      100% { transform: scale(5); opacity: 0; }
+    }
+
+    /* MOUSE TRAIL */
+    .trail-dot {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      animation: trailFade 0.5s forwards;
+    }
+
+    @keyframes trailFade {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    /* CUSTOM COLOR PICKER */
+    .color-picker-wrapper {
+      position: relative;
+      z-index: 20;
+    }
+
+    .custom-color-input {
+      width: 50px;
+      height: 50px;
+      border: 3px solid #ff99cc;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 0 20px #ff66aa;
+    }
+
+    .custom-color-input::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    .custom-color-input::-webkit-color-swatch {
+      border: none;
+      border-radius: 50%;
+    }
+
+    /* PAINT MODE CANVAS */
+    #paintCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9990;
+    }
+
+    /* COLOR PALETTE ACCUMULATOR */
+    .palette-strip {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 1rem 0;
+      min-height: 40px;
+    }
+
+    .palette-color {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 0 10px currentColor;
+      animation: palettePop 0.3s ease-out;
+    }
+
+    @keyframes palettePop {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    /* KEYBOARD HINT */
+    .keyboard-hint {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+
+    .keyboard-hint kbd {
+      background: rgba(255,255,255,0.15);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.3);
+      font-family: inherit;
+    }
+
+    /* MODE TOGGLE */
+    .mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .paint-toggle, .erase-toggle {
+      background: rgba(0,0,0,0.7);
+      border: 2px solid #ff99cc;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .paint-toggle:hover, .erase-toggle:hover {
+      background: #ff66aa;
+      transform: scale(1.05);
+    }
+
+    .paint-toggle.active {
+      background: #66ff99;
+      border-color: #33cc66;
+      color: #000;
+    }
+
+    .erase-toggle.active {
+      background: #ff6666;
+      border-color: #cc3333;
+      color: white;
+    }
+
+    .paint-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 5px;
+    }
+
+    /* TOAST NOTIFICATIONS */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(0,0,0,0.85);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      border: 2px solid #ff99cc;
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .holi-carnival {
+        padding: 1.5rem 1rem;
+        border-radius: 30px;
+      }
+      .title-giant {
+        font-size: clamp(2rem, 10vw, 4rem);
+      }
+      .color-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .powder-card {
+        padding: 1.2rem 0.8rem;
+      }
+      .card-icon {
+        font-size: 3rem;
+      }
+      .message-board {
+        flex-direction: column;
+        text-align: center;
+        border-radius: 30px;
+        padding: 1.5rem;
+      }
+      .holi-quote {
+        font-size: 1.5rem;
+      }
+      .action-zone {
+        flex-direction: column;
+      }
+      .holi-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- background particles -->
+  <div class="particle-field" id="particleField"></div>
+  <div class="splash-bg"></div>
+
+  <!-- Paint Canvas for draw mode -->
+  <canvas id="paintCanvas"></canvas>
+
+  <!-- Paint Mode Toggle -->
+  <div class="mode-toggle">
+    <button class="paint-toggle" id="paintToggle" onclick="togglePaintMode()">
+      🎨 Paint Mode: OFF
+    </button>
+    <div class="paint-controls" id="paintControls" style="display: none;">
+      <button class="erase-toggle" id="eraseToggle" onclick="toggleEraser()">
+        🧹 Eraser
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <div class="holi-carnival" id="mainCarnival">
+    <div class="color-drips"></div>
+
+    <!-- HEADER -->
+    <div class="header-splash">
+      <div class="title-giant">
+        HOLI 2026
+      </div>
+      <div class="subtitle-bash">
+        <span>root@coder:~$</span> echo "today is SPECIAL!" <span class="cursor-blink">_</span>
+      </div>
+    </div>
+
+    <!-- COLOR GRID - 6 POWDER CARDS -->
+    <div class="color-grid">
+      <!-- card 1 -->
+      <div class="powder-card card-pink" data-color="#FF4080" onclick="throwPowder('#FF4080')">
+        <div class="card-icon">🌸</div>
+        <div class="hex-code">#FF4080</div>
+        <div class="var-name">--gulal-pink</div>
+      </div>
+      <!-- card 2 -->
+      <div class="powder-card card-blue" data-color="#3BB3FF" onclick="throwPowder('#3BB3FF')">
+        <div class="card-icon">💎</div>
+        <div class="hex-code">#3BB3FF</div>
+        <div class="var-name">--neel-blue</div>
+      </div>
+      <!-- card 3 -->
+      <div class="powder-card card-yellow" data-color="#FFBF00" onclick="throwPowder('#FFBF00')">
+        <div class="card-icon">🌼</div>
+        <div class="hex-code">#FFBF00</div>
+        <div class="var-name">--kesari</div>
+      </div>
+      <!-- card 4 -->
+      <div class="powder-card card-green" data-color="#66FF99" onclick="throwPowder('#66FF99')">
+        <div class="card-icon">🍃</div>
+        <div class="hex-code">#66FF99</div>
+        <div class="var-name">--spring-green</div>
+      </div>
+      <!-- card 5 -->
+      <div class="powder-card card-purple" data-color="#C77DFF" onclick="throwPowder('#C77DFF')">
+        <div class="card-icon">🔯</div>
+        <div class="hex-code">#C77DFF</div>
+        <div class="var-name">--violet</div>
+      </div>
+      <!-- card 6 -->
+      <div class="powder-card card-orange" data-color="#FF8C42" onclick="throwPowder('#FF8C42')">
+        <div class="card-icon">🔥</div>
+        <div class="hex-code">#FF8C42</div>
+        <div class="var-name">--saffron</div>
+      </div>
+    </div>
+
+    <!-- MESSAGE BOARD (fun bash) -->
+    <div class="message-board">
+      <div class="holi-quote">
+        <span class="rainbow-text">“code</span> with <span class="rainbow-text">colours”</span>
+      </div>
+      <div class="cmd-line">
+        <span class="prompt">➜</span>
+        <span class="cmd-text" id="dynamicCmd">npm install gulal@latest</span>
+        <span style="color:#ff88ff;">✨</span>
+      </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-zone">
+      <button class="holi-btn" onclick="throwConfetti()" id="splashBtn">
+        <span>🎊</span> THROW GULAL <span>🎊</span>
+      </button>
+      <button class="holi-btn" onclick="location.reload()">
+        <span>🌀</span> REFRESH COLORS
+      </button>
+      <div class="color-picker-wrapper">
+        <input type="color" class="custom-color-input" id="customColor" value="#ff4080" onchange="throwCustomColor(this.value)">
+      </div>
+    </div>
+
+    <!-- COLOR PALETTE ACCUMULATOR -->
+    <div class="palette-strip" id="paletteStrip">
+      <!-- Colors will accumulate here -->
+    </div>
+
+    <p class="keyboard-hint" style="text-align: center;">
+      Press <kbd>1</kbd>-<kbd>6</kbd> for colors &nbsp;|&nbsp; <kbd>Space</kbd> for confetti
+      <kbd>P</kbd> Paint Mode &nbsp;|&nbsp; <kbd>E</kbd> Eraser &nbsp;|&nbsp; <kbd>C</kbd> Clear
+    </p>
+
+    <!-- TODAY SPECIAL MESSAGE -->
+    <div class="footer-special">
+      <div class="date-badge" id="todayDate">
+        🗓️ loading...
+      </div>
+      <div class="holi-message">
+        <strong>✨ today = HOLI ✨</strong>   <span style="color: #b1b1ff;">// for every coder</span>
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <span>🐍</span><span>⚡</span><span>☕</span><span>🦀</span>
+      </div>
+    </div>
+
+    <!-- rainbow bar -->
+    <div class="rainbow-bar"></div>
+    <!-- <p style="text-align: center; color: #bb99ff; font-size: 1rem; margin-top: 1rem; opacity: 0.8; font-family: monospace;">&lt; your console is now colourful /&gt;</p> -->
+  </div>
+
+  <script>
+    // Fun messages that rotate
+    const funMessages = [
+      "code with colours",
+      "debug your mood",
+      "compile happiness",
+      "git commit -m 'yay!'",
+      "npm install joy",
+      "pip install colors",
+      "console.log('🎉')",
+      "sudo celebrate",
+      "make holi=full",
+      "rm --rf sadness"
+    ];
+
+    // Color palette for keyboard shortcuts
+    const colorPalette = ['#FF4080', '#3BB3FF', '#FFBF00', '#66FF99', '#C77DFF', '#FF8C42'];
+
+    // Paint mode state
+    let paintMode = false;
+    let eraseMode = false;
+    let paintCanvas, paintCtx;
+    let isDrawing = false;
+    let currentPaintColor = '#FF4080';
+
+    (function() {
+      // set today's date + Holi wish
+      const todaySpan = document.getElementById('todayDate');
+      const today = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      todaySpan.innerHTML = `🎯 ${today.toLocaleDateString('en-US', options)}  |  हाेली है 🎨`;
+
+      // floating background particles
+      const particleField = document.getElementById('particleField');
+      for (let i = 0; i < 40; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        const size = Math.random() * 15 + 5;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.background = `hsl(${Math.random() * 360}, 90%, 70%)`;
+        particle.style.filter = 'blur(' + (Math.random() * 5) + 'px)';
+        particleField.appendChild(particle);
+      }
+
+      // mouse move effect for cards (spark)
+      const cards = document.querySelectorAll('.powder-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          card.style.setProperty('--x', x + '%');
+          card.style.setProperty('--y', y + '%');
+        });
+      });
+
+      // Initialize paint canvas
+      initPaintCanvas();
+
+      // Add mouse trail
+      document.addEventListener('mousemove', createMouseTrail);
+
+      // Touch support for mobile
+      document.addEventListener('touchmove', handleTouch, { passive: false });
+      document.addEventListener('touchstart', handleTouchStart, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', handleKeyboard);
+
+      // Rotate fun messages
+      setInterval(rotateMessage, 5000);
+    })();
+
+    // Initialize Paint Canvas
+    function initPaintCanvas() {
+      paintCanvas = document.getElementById('paintCanvas');
+      paintCtx = paintCanvas.getContext('2d');
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+    }
+
+    function resizeCanvas() {
+      paintCanvas.width = window.innerWidth;
+      paintCanvas.height = window.innerHeight;
+    }
+
+    // Mouse Trail Effect (throttled for performance)
+    let lastTrailTime = 0;
+    const TRAIL_THROTTLE = 50; // ms between trail dots
+    
+    function createMouseTrail(e) {
+      if (paintMode) return;
+      
+      const now = Date.now();
+      if (now - lastTrailTime < TRAIL_THROTTLE) return;
+      lastTrailTime = now;
+      
+      const trail = document.createElement('div');
+      trail.className = 'trail-dot';
+      trail.style.left = e.clientX - 6 + 'px';
+      trail.style.top = e.clientY - 6 + 'px';
+      trail.style.background = `hsl(${Date.now() % 360}, 80%, 60%)`;
+      trail.style.boxShadow = `0 0 10px ${trail.style.background}`;
+      document.body.appendChild(trail);
+      
+      setTimeout(() => trail.remove(), 500);
+    }
+
+    // Touch handlers for mobile
+    function handleTouch(e) {
+      if (!paintMode) return;
+      e.preventDefault();
+      const touch = e.touches[0];
+      drawOnCanvas(touch.clientX, touch.clientY);
+    }
+
+    function handleTouchStart(e) {
+      if (!paintMode) return;
+      isDrawing = true;
+      const touch = e.touches[0];
+      drawOnCanvas(touch.clientX, touch.clientY);
+    }
+
+    function handleTouchEnd() {
+      isDrawing = false;
+    }
+
+    // Keyboard shortcuts
+    function handleKeyboard(e) {
+      const key = e.key;
+      
+      // Number keys 1-6 for colors (only when not in paint mode or erase mode)
+      if (!paintMode && key >= '1' && key <= '6') {
+        const index = parseInt(key) - 1;
+        throwPowder(colorPalette[index]);
+        showToast(`🎨 Throwing ${['Pink', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'][index]}!`);
+      }
+      // Space for confetti
+      else if (key === ' ') {
+        e.preventDefault();
+        throwConfetti();
+        showToast('🎊 HOLI BLAST! 🎊');
+      }
+      // P for paint mode
+      else if (key.toLowerCase() === 'p') {
+        togglePaintMode();
+      }
+      // E for eraser (when in paint mode)
+      else if (key.toLowerCase() === 'e' && paintMode) {
+        toggleEraser();
+      }
+      // C for clear canvas
+      else if (key.toLowerCase() === 'c' && paintMode) {
+        clearCanvas();
+      }
+    }
+
+    // Toggle Paint Mode
+    function togglePaintMode() {
+      paintMode = !paintMode;
+      const btn = document.getElementById('paintToggle');
+      const controls = document.getElementById('paintControls');
+      const paintCanvasEl = document.getElementById('paintCanvas');
+      
+      if (paintMode) {
+        btn.textContent = '🎨 Paint Mode: ON';
+        btn.classList.add('active');
+        controls.style.display = 'flex';
+        paintCanvasEl.style.pointerEvents = 'auto';
+        showToast('🎨 Paint Mode ON! Click/drag to draw. Press E for eraser, C to clear. Press P to turn OFF.');
+        
+        // Add drawing event listeners
+        paintCanvas.addEventListener('mousedown', startDrawing);
+        paintCanvas.addEventListener('mousemove', draw);
+        paintCanvas.addEventListener('mouseup', stopDrawing);
+        paintCanvas.addEventListener('mouseleave', stopDrawing);
+      } else {
+        btn.textContent = '🎨 Paint Mode: OFF';
+        btn.classList.remove('active');
+        controls.style.display = 'none';
+        eraseMode = false;
+        document.getElementById('eraseToggle').classList.remove('active');
+        paintCanvasEl.style.pointerEvents = 'none';
+        showToast('🎨 Paint Mode OFF');
+      }
+    }
+
+    // Toggle Eraser Mode
+    function toggleEraser() {
+      if (!paintMode) return;
+      
+      eraseMode = !eraseMode;
+      const btn = document.getElementById('eraseToggle');
+      
+      if (eraseMode) {
+        btn.classList.add('active');
+        showToast('🧹 Eraser ON! Click/drag to erase. Press E to turn OFF.');
+      } else {
+        btn.classList.remove('active');
+        showToast('🧹 Eraser OFF');
+      }
+    }
+
+    // Drawing functions
+    function startDrawing(e) {
+      isDrawing = true;
+      draw(e);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      drawOnCanvas(e.clientX, e.clientY);
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    function drawOnCanvas(x, y) {
+      paintCtx.beginPath();
+      
+      if (eraseMode) {
+        // Eraser - clear the canvas area
+        paintCtx.arc(x, y, 25, 0, Math.PI * 2);
+        paintCtx.fillStyle = 'rgba(0,0,0,1)';
+        paintCtx.globalCompositeOperation = 'destination-out';
+        paintCtx.fill();
+        paintCtx.globalCompositeOperation = 'source-over';
+      } else {
+        // Normal paint
+        paintCtx.arc(x, y, 15, 0, Math.PI * 2);
+        paintCtx.fillStyle = currentPaintColor;
+        paintCtx.shadowBlur = 20;
+        paintCtx.shadowColor = currentPaintColor;
+        paintCtx.fill();
+        paintCtx.shadowBlur = 0;
+      }
+    }
+
+    function clearCanvas() {
+      paintCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+      showToast('🧹 Canvas cleared!');
+    }
+
+    // Update paint color from custom picker
+    document.getElementById('customColor').addEventListener('input', function(e) {
+      currentPaintColor = e.target.value;
+    });
+
+    // Toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // Rotate fun messages
+    function rotateMessage() {
+      const quote = document.querySelector('.rainbow-text');
+      if (quote) {
+        const randomMsg = funMessages[Math.floor(Math.random() * funMessages.length)];
+        quote.innerHTML = randomMsg;
+      }
+    }
+
+    // Add color to palette strip
+    function addToPalette(color) {
+      const palette = document.getElementById('paletteStrip');
+      const colorDiv = document.createElement('div');
+      colorDiv.className = 'palette-color';
+      colorDiv.style.background = color;
+      colorDiv.style.color = color;
+      colorDiv.title = color;
+      palette.appendChild(colorDiv);
+      
+      // Keep only last 12 colors
+      while (palette.children.length > 12) {
+        palette.removeChild(palette.firstChild);
+      }
+    }
+
+    // MAIN INTERACTIVE: throw powder (gulal) function
+    function throwPowder(colorHex) {
+      // Add to palette
+      addToPalette(colorHex);
+      
+      // Update paint color
+      currentPaintColor = colorHex;
+      document.getElementById('customColor').value = colorHex;
+
+      // change command line text
+      const cmdSpan = document.getElementById('dynamicCmd');
+      if (cmdSpan) {
+        cmdSpan.innerText = `splash --color '${colorHex}' --happy`;
+      }
+
+      // create flying particles (reduced count for performance)
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          createParticle(colorHex);
+        }, i * 50);
+      }
+
+      // also flash main border
+      const carnival = document.querySelector('.holi-carnival');
+      if (carnival) {
+        carnival.style.transition = 'border 0.1s, box-shadow 0.2s';
+        carnival.style.border = `6px solid ${colorHex}`;
+        carnival.style.boxShadow = `0 0 100px ${colorHex}, 0 0 40px #ffffff80 inset`;
+        setTimeout(() => {
+          carnival.style.border = '3px solid rgba(255, 200, 150, 0.3)';
+          carnival.style.boxShadow = '0 40px 70px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 120, 160, 0.4) inset, 0 0 40px #ff66aa50';
+        }, 500);
+      }
+
+      // console message for devs
+      console.log(`%c🌸 Holi special! %cColor ${colorHex} thrown`, `background: ${colorHex}; color: black; font-size: 1.4rem; padding: 0.3rem; border-radius: 8px;`, 'color: #ffaa; font-size: 1.2rem;');
+    }
+
+    // Custom color throw
+    function throwCustomColor(colorHex) {
+      currentPaintColor = colorHex;
+      throwPowder(colorHex);
+      showToast(`🎨 Custom color: ${colorHex}`);
+    }
+
+    // throw confetti-like particles (same as throwPowder but random)
+    function throwConfetti() {
+      const colors = ['#FF4080', '#3BB3FF', '#FFBF00', '#66FF99', '#C77DFF', '#FF8C42', '#FF66B2', '#AAFFAA', '#FFD966'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      throwPowder(randomColor);
+      
+      // Add multiple colors to palette
+      colors.slice(0, 3).forEach(c => addToPalette(c));
+      
+      // also update command
+      document.getElementById('dynamicCmd').innerText = 'holi --throw-confetti --all-colors';
+    }
+
+    // particle creator (optimized)
+    function createParticle(color) {
+      const particle = document.createElement('div');
+      particle.className = 'splash-particle';
+      particle.style.background = color || '#ff66aa';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.width = Math.random() * 30 + 15 + 'px';
+      particle.style.height = particle.style.width;
+      particle.style.filter = `blur(${Math.random() * 4}px)`;
+      particle.style.opacity = '0.7';
+      particle.style.boxShadow = `0 0 15px ${color}`;
+      document.body.appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 800);
+    }
+
+    // also make cards clickable (already onclick) but extra: random messages
+    window.throwPowder = throwPowder;
+    window.throwConfetti = throwConfetti;
+    window.throwCustomColor = throwCustomColor;
+    window.togglePaintMode = togglePaintMode;
+    window.toggleEraser = toggleEraser;
+
+    // extra: click anywhere to throw little colour (with cooldown)
+    let lastClickTime = 0;
+    const CLICK_COOLDOWN = 200;
+    
+    document.body.addEventListener('click', function(e) {
+      const now = Date.now();
+      if (now - lastClickTime < CLICK_COOLDOWN) return;
+      lastClickTime = now;
+      
+      if (e.target.closest('.holi-btn') || e.target.closest('.powder-card') || e.target.closest('.paint-toggle') || e.target.closest('.color-picker-wrapper')) return;
+      
+      // subtle: just one particle (reduced from multiple)
+      const colors = ['#ff6666', '#66ff66', '#6666ff', '#ffff66', '#ff66ff'];
+      const randCol = colors[Math.floor(Math.random() * colors.length)];
+      const p = document.createElement('div');
+      p.className = 'splash-particle';
+      p.style.background = randCol;
+      p.style.left = e.clientX + 'px';
+      p.style.top = e.clientY + 'px';
+      p.style.width = '30px';
+      p.style.height = '30px';
+      p.style.filter = 'blur(6px)';
+      p.style.boxShadow = `0 0 30px ${randCol}`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 700);
+    });
+
+    // make cursor blink more fun
+    setInterval(() => {
+      const cursor = document.querySelector('.cursor-blink');
+      if (cursor) cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+    }, 600);
+  </script>
+</body>
+</html>
